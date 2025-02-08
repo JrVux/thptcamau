@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
-            const response = await fetch('YOUR_WEB_APP_URL_HERE/api/register', {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbyr1PzMhXNhUdIJsmEpvOuo7FOnxt2Ng6hHR3e9GCnm8I6reF8BRTGJMZcNwAwn2MM6/exec', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, email, password })
