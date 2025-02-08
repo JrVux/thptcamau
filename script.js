@@ -1,19 +1,41 @@
-document.getElementById('registrationForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('registrationForm');
+    const messageEl = document.getElementById('message');
 
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
+    form.addEventListener('submit', async function (event) {
+        event.preventDefault();
 
-    if (password !== confirmPassword) {
-        document.getElementById('message').textContent = 'Mật khẩu không khớp!';
-        return;
-    }
+        const name = form.name.value.trim();
+        const email = form.email.value.trim();
+        const password = form.password.value;
+        const confirmPassword = form.confirmPassword.value;
 
-    // Gửi dữ liệu đến server hoặc xử lý tại đây
-    // Ví dụ: console.log({ name, email, password });
+        if (password !== confirmPassword) {
+            messageEl.textContent = 'Mật khẩu không khớp!';
+            messageEl.style.color = 'red';
+            return;
+        }
 
-    document.getElementById('message').textContent = 'Đăng ký thành công!';
-    document.getElementById('registrationForm').reset();
+        try {
+            const response = await fetch('YOUR_WEB_APP_URL_HERE/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                messageEl.textContent = 'Đăng ký thành công!';
+                messageEl.style.color = 'green';
+                form.reset();
+            } else {
+                messageEl.textContent = result.message || 'Đăng ký thất bại!';
+                messageEl.style.color = 'red';
+            }
+        } catch (error) {
+            messageEl.textContent = 'Lỗi kết nối đến server!';
+            messageEl.style.color = 'red';
+        }
+    });
 });
